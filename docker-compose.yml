@@ -1,0 +1,66 @@
+version: '2.2'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/master/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    container_name: elasticsearch2
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/slave_1/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - esnet
+  elasticsearch3:
+     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+     container_name: elasticsearch3
+     environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+     ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+     volumes:
+      - esdata3:/usr/share/elasticsearch/data
+      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/slave_2/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+     networks:
+      - esnet
+  kibana:
+     image: docker.elastic.co/kibana/kibana:6.4.2
+     container_name: kibana
+     ports:
+       - 5601:5601
+     networks:
+      - esnet         
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  esdata3:
+    driver: local
+
+networks:
+  esnet:

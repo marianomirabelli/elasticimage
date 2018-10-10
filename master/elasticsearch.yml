@@ -1,0 +1,7 @@
+cluster.name: marian_docker_cluster
+node.name: master_node
+node.master: true
+network.host: 0.0.0.0
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping.unicast.hosts: ["elasticsearch","elasticsearch2","elasticsearch3"]
+
