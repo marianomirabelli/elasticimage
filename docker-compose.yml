@@ -5,14 +5,14 @@ services:
     container_name: elasticsearch
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - esdata1:/usr/share/elasticsearch/data
-      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/master/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./master/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
     networks:
@@ -22,14 +22,14 @@ services:
     container_name: elasticsearch2
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
       - esdata2:/usr/share/elasticsearch/data
-      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/slave_1/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./slave_1/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - esnet
   elasticsearch3:
@@ -37,14 +37,14 @@ services:
      container_name: elasticsearch3
      environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      ulimits:
       memlock:
         soft: -1
         hard: -1
      volumes:
       - esdata3:/usr/share/elasticsearch/data
-      - /Users/mariano.mirabelli/Documents/POCs/elastic-test/slave_2/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./slave_2/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
      networks:
       - esnet
   kibana:
@@ -53,7 +53,14 @@ services:
      ports:
        - 5601:5601
      networks:
-      - esnet         
+      - esnet
+  elasticHQ:
+     image: elastichq/elasticsearch-hq
+     container_name: elasticHQ
+     ports:
+      - 5000:5000
+     networks:
+      - esnet
 volumes:
   esdata1:
     driver: local
